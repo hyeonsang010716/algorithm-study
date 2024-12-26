@@ -10,7 +10,7 @@ class Basic:
 
     def __init__(self):
 
-        self.server_url = "http://localhost:8000"
+        self.server_url = "http://localhost:8001"
 
         if "name" not in st.session_state:
             st.session_state["name"] = None
@@ -22,10 +22,8 @@ class Basic:
             st.session_state["session_id_input_disable"] = False
 
     def session_enable(self):
-
-        if st.session_state["name"]:
-            st.session_state["session_disable"] = False
-            st.session_state["session_id_input_disable"] = True
+        st.session_state["session_disable"] = False
+        st.session_state["session_id_input_disable"] = True
         return
 
     def session_disable(self):
@@ -33,14 +31,14 @@ class Basic:
         st.session_state["session_id_input_disable"] = False
         return
 
-    def send_query_to_server(self, session_id, user_query):
+    def send_query_to_server(self, user_query):
         """서버에 요청을 보내고 응답을 받습니다."""
 
-        name = st.session_state["name"]
+        name = st.session_state["name"][0]
 
-        data = {"session_id": session_id, "messages": user_query}
+        data = {"input": user_query}
 
-        response = requests.post(f"{self.server_url}/{name}/", json=data)
+        response = requests.post(f"{self.server_url}/{name}/chat/algorithm/", json=data)
         if response.status_code == 200:
             return response.json()
         else:
@@ -51,40 +49,51 @@ class Basic:
 
         st.sidebar.divider()
 
-        name =selected_items = st.sidebar.multiselect("이름 선택", ["hyeonsang"] , disabled=st.session_state["session_id_input_disable"])
+        st.session_state["name"] = st.sidebar.multiselect("이름 선택", ["hyeonsang"] , disabled=st.session_state["session_id_input_disable"])
 
-        if name:
+        if st.session_state["name"]: 
+            session_start = st.sidebar.button(
+                "세션 시작",
+                disabled=st.session_state["session_id_input_disable"],
+                on_click=self.session_enable,
+            )
 
-            st.session_state["name"] = name[0]
+            if session_start:
+                name = st.session_state["name"][0]
+                st.sidebar.info(f"{name}님 세션을 시작합니다.")
 
-        session_start = st.sidebar.button(
-            "세션 시작",
-            disabled=st.session_state["session_id_input_disable"],
-            on_click=self.session_enable,
-        )
-
-        if session_start:
-
-            st.sidebar.info(f"{name[0]}님 세션을 시작합니다.")
-
-
+        else: 
+            st.sidebar.warning("이름을 선택해주세요.")
 
         problem_numbers = st.chat_input(
             placeholder="문제 번호를 입력하세요.",
             disabled=st.session_state["session_disable"],
         )
+
         if problem_numbers:
 
-            stat , content , inputs , ouputs = get_data(problem_numbers)
+            stat , content , inputs , outputs = get_data(problem_numbers)
 
-            if stat:
-                st.write(content)
-                st.write(inputs)
-                st.write(ouputs)
+            try:
+                if stat:
+                    st.write(content)
 
-            else:
+                    answers = self.send_query_to_server(inputs)["answer"]
+
+                    for i in range(1 , len(inputs)+1):
+                        st.write(f"## 예제 {i}")
+                        st.write(f"#### 입력")
+                        st.write(inputs[i-1])
+                        st.write(f"#### 출력")
+                        st.write(outputs[i-1])
+                        st.write(f"#### 정답")
+                        st.write(answers[i-1])
+                    
+                else:
+                    st.write("요청 에러 문제 숫자만 입력해주세요.")
+            except Exception as e:
+                print(e)
                 st.write("요청 에러 문제 숫자만 입력해주세요.")
-            
 
 
 if __name__ == "__main__":
