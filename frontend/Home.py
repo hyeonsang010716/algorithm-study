@@ -34,7 +34,7 @@ class Basic:
     def send_query_to_server(self, user_query):
         """서버에 요청을 보내고 응답을 받습니다."""
 
-        name = st.session_state["name"][0]
+        name = st.session_state["name"]
 
         data = {"input": user_query}
 
@@ -49,7 +49,7 @@ class Basic:
 
         st.sidebar.divider()
 
-        st.session_state["name"] = st.sidebar.multiselect("이름 선택", ["hyeonsang"] , disabled=st.session_state["session_id_input_disable"])
+        st.session_state["name"] = st.sidebar.selectbox("이름 선택", ["hyeonsang" , "UH" , "dbwognl" , "sentryc"] , disabled=st.session_state["session_id_input_disable"])
 
         if st.session_state["name"]: 
             session_start = st.sidebar.button(
@@ -59,7 +59,7 @@ class Basic:
             )
 
             if session_start:
-                name = st.session_state["name"][0]
+                name = st.session_state["name"]
                 st.sidebar.info(f"{name}님 세션을 시작합니다.")
 
         else: 
