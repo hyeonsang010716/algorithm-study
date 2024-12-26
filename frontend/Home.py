@@ -77,17 +77,32 @@ class Basic:
             try:
                 if stat:
                     st.write(content)
-
+                    
                     answers = self.send_query_to_server(inputs)["answer"]
 
+                    print(inputs)
+                    print(outputs)
+                    print(answers)
+                    
+                    ai = ""
+                    
+                    human = ""
+                    
                     for i in range(1 , len(inputs)+1):
-                        st.write(f"## 예제 {i}")
-                        st.write(f"#### 입력")
-                        st.write(inputs[i-1])
-                        st.write(f"#### 출력")
-                        st.write(outputs[i-1])
-                        st.write(f"#### 정답")
-                        st.write(answers[i-1])
+                        ai += f"## 예제 {i}" + "\n"
+                        ai += "#### 입력" + "\n"
+                        ai += inputs[i-1] + "\n"
+                        ai += "#### 출력" + "\n"
+                        ai += outputs[i-1] + "\n"
+
+                        human += "#### 정답" + "\n"
+                        human += answers[i-1] + "\n"
+
+                        st.chat_message("ai").write(ai.replace("\n", "  \n"))
+                        st.chat_message("human").write(human.replace("\n", "  \n"))
+                        
+                        ai = ""
+                        human = ""
                     
                 else:
                     st.write("요청 에러 문제 숫자만 입력해주세요.")

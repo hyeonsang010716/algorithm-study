@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from api.util.formats import InRequest , OutResponse
-from model.dp import test
+from model.greedy import p2839
 
 router = APIRouter()
 
@@ -14,11 +14,11 @@ async def chat_with_openai(
 
         for Input in query.input:
             
-            answer = test.solve(Input)
+            answer = p2839.solve(Input)
 
-            answers.append(answer)
+            answers.append(str(answer))
 
         return OutResponse(answer = answers)
 
     except Exception as e:
-        return OutResponse(answer = str(e))
+        return OutResponse(answer = [str(e)])
