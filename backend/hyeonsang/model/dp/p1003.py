@@ -21,8 +21,5 @@ def solve(Input):
             
         answers += answer + "\n"
         
-        
-        
-        
     return answers
     
