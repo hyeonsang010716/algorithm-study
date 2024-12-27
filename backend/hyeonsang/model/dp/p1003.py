@@ -20,5 +20,9 @@ def solve(Input):
             answer = str(List[x-1][0]) +  " " + str(List[x-1][1])
             
         answers += answer + "\n"
+        
+        
+        
+        
     return answers
     
