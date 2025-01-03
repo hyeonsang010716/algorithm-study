@@ -10,5 +10,6 @@ def get_hello():
 @bp.route("/chat/algorithm/", methods=['POST'])
 def send_result():
     #TODO 백 프론트 연결은 성공 여기에 json을 받아서 어떻게 처리할 지 고민
-    # data = request.get_json()
-    return None
+    data = request.get_json()
+    result = data["input"]
+    return {"answer": "11"}

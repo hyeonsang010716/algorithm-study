@@ -66,4 +66,4 @@ def get_data(num):
 
 
 if __name__ == "__main__":
-    get_data(1000)
+    print(get_data(1167))

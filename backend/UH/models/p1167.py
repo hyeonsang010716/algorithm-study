@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 
-def solution(n: int, graph: Dict[int, Dict[int, int]]):
+def solution(n: int, graph: Dict[int, Dict[int, int]]) -> int:
     def dfs(start):
         from collections import deque
         width = 0
@@ -27,31 +27,30 @@ def solution(n: int, graph: Dict[int, Dict[int, int]]):
     return result
 
 
-def get_answer(input_list: List[List[int]]):
-    n = input_list[0][0]
+def get_input(input_data: List[str]) -> List[int]:
+    return list(map(int, input_data[0].split()))
+
+
+def get_answer(input_list: List[str]):
+    arr = get_input(input_list)
+
+    n = arr[0]
     graph = {k: {} for k in range(1, n+1)}
 
-    for tmp in input_list[1:]:
-        for _ in range(n):
-            start = tmp[0]
-            i = 1
-            while True:
-                node = tmp[i]
-                if node == -1:
-                    break
-                graph[start][node] = tmp[i+1]
-                i += 2
+    i = 1
+    while i < len(arr):
+        node = arr[i]
+        i += 1
+        while arr[i] != -1:
+            target = arr[i]
+            weight = arr[i+1]
+            graph[node][target] = weight
+            i += 2
+        i += 1
     return solution(n, graph)
 
 
 if __name__ == "__main__":
-    input_list = [
-        [5],
-        [1, 3, 2, -1],
-        [2, 4, 4, -1],
-        [3, 1, 2, 4, 3, -1],
-        [4, 2, 4, 3, 3, 5, 6, -1],
-        [5, 4, 6, -1]
-    ]
-
+    input_list = ['5\n1 3 2 -1\n2 4 4 -1\n3 1 2 4 3 -1\n4 2 4 3 3 5 6 -1\n5 4 6 -1']
+    
     print(get_answer(input_list))
