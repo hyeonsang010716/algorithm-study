@@ -12,4 +12,4 @@ def send_result():
     data = request.get_json()
     input = data["input"]
     result = p1167.get_answer(input)
-    return {"answer": str(result)}
+    return {"answer": [str(result)], "tag": "dp"}
