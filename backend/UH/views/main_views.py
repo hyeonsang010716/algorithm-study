@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from models import p1167
+from models import get_answer
 
 bp = Blueprint('main', __name__, url_prefix='/UH')
 
@@ -9,7 +9,6 @@ def get_hello():
 
 @bp.route("/chat/algorithm/", methods=['POST'])
 def send_result():
-    data = request.get_json()
-    input = data["input"]
-    result = p1167.get_answer(input)
-    return {"answer": [str(result)], "tag": "dp"}
+    pro_num = 1967
+    input = request.get_json()["input"]
+    return {"answer": [str(get_answer(pro_num, input))], "tag": "dp"}
