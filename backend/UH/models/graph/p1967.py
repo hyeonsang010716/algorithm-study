@@ -30,14 +30,8 @@ def dfs(start: int, graph: Dict[int, int]) -> Tuple[int, int]:
     return outer_node, max_len
 
 
-def solution(n: int, graph: Dict[int, int]) -> int:
-    outer, _ = dfs(1, graph)
-    _, result = dfs(outer, graph)
-    return result
-
-
-def get_answer(input_list: List[str]) -> Tuple[int, Dict[int, int]]:
-    input_list = list(map(int, input_list[0].split()))
+def process_input_data(input_data: str):
+    input_list = list(map(int, input_data.split()))
 
     n = input_list[0]
     graph = {k: {} for k in range(1, n+1)}
@@ -46,10 +40,17 @@ def get_answer(input_list: List[str]) -> Tuple[int, Dict[int, int]]:
         parent, child, weight = input_list[i], input_list[i+1], input_list[i+2]
         graph[parent][child] = weight
         graph[child][parent] = weight
-    return solution(n, graph)
+    return n, graph
+
+
+def solution(input_data: str) -> Tuple[int, Dict[int, int]]:
+    _, graph = process_input_data(input_data)
+    outer, _ = dfs(1, graph)
+    _, result = dfs(outer, graph)
+    return result
 
 
 if __name__ == "__main__":
-    li =  ['12\n1 2 3\n1 3 2\n2 4 5\n3 5 11\n3 6 9\n4 7 1\n4 8 7\n5 9 15\n5 10 4\n6 11 6\n6 12 10']
-    print(get_answer(li))
+    li =  '12\n1 2 3\n1 3 2\n2 4 5\n3 5 11\n3 6 9\n4 7 1\n4 8 7\n5 9 15\n5 10 4\n6 11 6\n6 12 10'
+    print(solution(li))
     

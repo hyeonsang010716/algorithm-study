@@ -1,7 +1,7 @@
 from typing import Dict, List
-'''graph'''
 
-def solution(n: int, graph: Dict[int, Dict[int, int]]) -> int:
+
+def get_tree_diameter(n: int, graph: Dict[int, Dict[int, int]]) -> int:
     def dfs(start):
         from collections import deque
         width = 0
@@ -27,12 +27,8 @@ def solution(n: int, graph: Dict[int, Dict[int, int]]) -> int:
     return result
 
 
-def get_input(input_data: List[str]) -> List[int]:
-    return list(map(int, input_data[0].split()))
-
-
-def get_answer(input_list: List[str]):
-    arr = get_input(input_list)
+def process_input_data(input_data: str):
+    arr = list(map(int, input_data.split()))
 
     n = arr[0]
     graph = {k: {} for k in range(1, n+1)}
@@ -47,10 +43,16 @@ def get_answer(input_list: List[str]):
             graph[node][target] = weight
             i += 2
         i += 1
-    return solution(n, graph)
+    
+    return n, graph
+
+
+def solution(input_data: str):
+    n, graph = process_input_data(input_data)
+    return get_tree_diameter(n, graph)
 
 
 if __name__ == "__main__":
-    input_list = ['5\n1 3 2 -1\n2 4 4 -1\n3 1 2 4 3 -1\n4 2 4 3 3 5 6 -1\n5 4 6 -1']
-    
-    print(get_answer(input_list))
+    input_list = '5\n1 3 2 -1\n2 4 4 -1\n3 1 2 4 3 -1\n4 2 4 3 3 5 6 -1\n5 4 6 -1'
+
+    print(solution(input_list))
