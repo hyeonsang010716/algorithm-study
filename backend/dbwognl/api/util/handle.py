@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from api.util.formats import InRequest , OutResponse
-from model.math import p1002
+from model.string import p1120
 
 router = APIRouter()
 
@@ -14,7 +14,7 @@ async def chat_with_openai(
 
         for Input in query.input:
             
-            answer = p1002.solve(Input) #####
+            answer = p1120.solve(Input) #####
 
             answers.append(str(answer))
 
