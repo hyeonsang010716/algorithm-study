@@ -20,6 +20,9 @@ class Basic:
 
         if "session_id_input_disable" not in st.session_state:
             st.session_state["session_id_input_disable"] = False
+        
+        if "problem_numbers" not in st.session_state:
+            st.session_state["problem_numbers"] = None
 
     def session_enable(self):
         st.session_state["session_disable"] = False
@@ -31,14 +34,27 @@ class Basic:
         st.session_state["session_id_input_disable"] = False
         return
 
-    def send_query_to_server(self, user_query):
+    def send_problem_number_to_server(self):
+        """ 서버에 문제 번호를 요청합니다."""
+        
+        name = st.session_state["name"]
+        
+        response = requests.post(f"{self.server_url}/{name}/chat/problem_number")
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error("Error communicating with the server.")
+            return None
+
+
+    def send_problem_input_to_server(self, user_query):
         """서버에 요청을 보내고 응답을 받습니다."""
 
         name = st.session_state["name"]
 
         data = {"input": user_query}
 
-        response = requests.post(f"{self.server_url}/{name}/chat/algorithm/", json=data)
+        response = requests.post(f"{self.server_url}/{name}/chat/algorithm", json=data)
         if response.status_code == 200:
             return response.json()
         else:
@@ -65,24 +81,29 @@ class Basic:
         else: 
             st.sidebar.warning("이름을 선택해주세요.")
 
-        problem_numbers = st.chat_input(
-            placeholder="문제 번호를 입력하세요.",
-            disabled=st.session_state["session_disable"],
-        )
 
-        if problem_numbers:
+        if st.session_state["name"] != "dbwognl":
 
-            stat , content , inputs , outputs = get_data(problem_numbers)
+            if st.button("문제 요청" , disabled=st.session_state["session_disable"]):
+                st.session_state["problem_numbers"] = self.send_problem_number_to_server()["answer"]
+                
+        else:
+            
+            st.session_state["problem_numbers"] = st.chat_input(
+                placeholder="문제 번호를 입력하세요.",
+                disabled=st.session_state["session_disable"],
+            )
+
+
+        if st.session_state["problem_numbers"]:
+
+            stat , content , inputs , outputs = get_data(st.session_state["problem_numbers"])
 
             try:
                 if stat:
                     st.write(content)
                     
-                    answers = self.send_query_to_server(inputs)["answer"]
-
-                    print(inputs)
-                    print(outputs)
-                    print(answers)
+                    answers = self.send_problem_input_to_server(inputs)["answer"]
                     
                     ai = ""
                     
