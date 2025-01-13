@@ -1,0 +1,84 @@
+[33mcommit e3ba3c065cbdef81b79cd810bb74d38a85ff89d8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdbwognl/string-1120[m[33m, [m[1;31morigin/dbwognl/math-1002[m[33m, [m[1;32mdbwognl/math-1002[m[33m)[m
+Author: dbwognl123 <wognl010616@naver.com>
+Date:   Sun Jan 12 17:32:22 2025 +0900
+
+    dbwognl[string]2025-01-12
+
+[33mcommit 4610c67634d40b66c0e89f4f8fb1fd7ac5b4cf8e[m[33m ([m[1;32mmain[m[33m)[m
+Author: dbwognl123 <wognl010616@naver.com>
+Date:   Thu Jan 2 02:25:18 2025 +0900
+
+    dbwognl[math]2025-01-02
+
+[33mcommit 5ff58379b5fdd5f742455fc4746a6522d958251a[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: hyeonsang010716 <kyr76789@gmail.com>
+Date:   Thu Dec 26 23:12:04 2024 +0900
+
+    CODEOWNERS init
+
+[33mcommit ac7e827088706d3c0638b0bef8b03ce05f1dfb2b[m
+Author: Hyeonsang Cho <kyr76789@gmail.com>
+Date:   Thu Dec 26 22:58:21 2024 +0900
+
+    Update README.md
+
+[33mcommit 069b63bf7c2e5969e40edf22a0e988679de089d4[m
+Author: Hyeonsang Cho <kyr76789@gmail.com>
+Date:   Thu Dec 26 22:56:39 2024 +0900
+
+    Update README.md
+
+[33mcommit eb7816eff775612f4ca34aa1a11b8825f9ac6438[m
+Author: Hyeonsang Cho <kyr76789@gmail.com>
+Date:   Thu Dec 26 22:56:27 2024 +0900
+
+    Update README.md
+
+[33mcommit 72306dfabc6da4f42ffbc16c99e8e544033886ea[m
+Author: Hyeonsang Cho <kyr76789@gmail.com>
+Date:   Thu Dec 26 22:55:39 2024 +0900
+
+    Update README.md
+
+[33mcommit 384ddec9271fe214b64732cc4afdb3557572a078[m
+Merge: 90a2f03 b09a526
+Author: hyeonsang010716 <kyr76789@gmail.com>
+Date:   Thu Dec 26 22:50:03 2024 +0900
+
+    Merge branch 'main' of https://github.com/hyeonsang010716/algorithm-study into HEAD
+
+[33mcommit 90a2f03fb7969be6c8d4b6bb5c939cb8411e9ecc[m
+Author: hyeonsang010716 <kyr76789@gmail.com>
+Date:   Thu Dec 26 22:47:46 2024 +0900
+
+    [FIX] UI/UX
+
+[33mcommit b09a5262f8808a3e18644b43404b0bd25cc78365[m
+Author: Hyeonsang Cho <kyr76789@gmail.com>
+Date:   Thu Dec 26 22:44:56 2024 +0900
+
+    Update README.md
+
+[33mcommit 956a38c21cfd1d3ffbadd37d9db0e54d579ba9fd[m
+Author: hyeonsang010716 <kyr76789@gmail.com>
+Date:   Thu Dec 26 22:41:57 2024 +0900
+
+    [FIX] rename README
+
+[33mcommit b801899ed1eb9845e6482fc0540655dcca664c7a[m
+Author: hyeonsang010716 <kyr76789@gmail.com>
+Date:   Thu Dec 26 22:40:18 2024 +0900
+
+    1.0.0v
+
+[33mcommit c27e4a43ceb6f64e25099c58aac74be0914218ce[m
+Author: hyeonsang010716 <kyr76789@gmail.com>
+Date:   Thu Dec 26 14:16:40 2024 +0900
+
+    [Feat] front back connect
+
+[33mcommit 48ceda6e8d38464e8d5337d7c1f70227c81722b3[m
+Author: hyeonsang010716 <kyr76789@gmail.com>
+Date:   Tue Dec 24 17:26:11 2024 +0900
+
+    [FEAT] project init & front UI/UX
