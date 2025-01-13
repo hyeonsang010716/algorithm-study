@@ -17,7 +17,7 @@ def search_file_path(number: int) -> str:
     for root, _, files in os.walk(curr_path):
         for file in files:
             if file.endswith(filename):
-                file_path = f"{root}\\{filename}"
+                file_path = f"{root}/{filename}"
                 return file_path
     return None
 
