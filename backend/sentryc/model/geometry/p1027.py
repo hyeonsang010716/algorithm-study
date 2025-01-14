@@ -34,4 +34,6 @@ def solve(Input):
 
 if __name__== "__main__":
     input_list1 = "15\n1 5 3 2 6 3 2 6 4 2 5 7 3 1 5"
+    input_list2 = "1\n10"
     print(solve(input_list1))
+    print(solve(input_list2))
