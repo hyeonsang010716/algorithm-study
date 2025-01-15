@@ -9,7 +9,7 @@ def import_func_from_file(file_path: str):
     spec.loader.exec_module(module)
     return getattr(module, "solution")
 
-#TODO 경로를 이용해서 태그 달아주기
+
 def search_file_path(number: int) -> str:
     filename = f"p{number}.py"
     curr_path = os.path.dirname(os.path.abspath(__file__))
