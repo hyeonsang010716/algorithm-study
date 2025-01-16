@@ -32,8 +32,3 @@ def solution(input_data: str):
 if __name__ == "__main__":
     inputs = '4\n4 5 1 0'
     print(solution(inputs))
-
-    # n = int(input())
-    # arr = list(map(int, input().split()))
-
-    # print(count_odd(arr))
