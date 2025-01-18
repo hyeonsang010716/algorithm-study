@@ -7,3 +7,6 @@ class InRequest(BaseModel):
 
 class OutResponse(BaseModel):
     answer: List
+    
+class OutProblemNumber(BaseModel):
+    answer: str

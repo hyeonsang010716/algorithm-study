@@ -1,10 +1,10 @@
 from fastapi import APIRouter
-from api.util.formats import InRequest , OutResponse
-from model.greedy import p2839
+from api.util.formats import InRequest , OutResponse , OutProblemNumber
+from model.instruction import p17430
 
 router = APIRouter()
 
-@router.post("/algorithm/")
+@router.post("/algorithm")
 async def chat_with_openai(
     query: InRequest,
 ) -> OutResponse:
@@ -13,8 +13,8 @@ async def chat_with_openai(
         answers = []
 
         for Input in query.input:
-            
-            answer = p2839.solve(Input)
+
+            answer = p17430.solve(Input)
 
             answers.append(str(answer))
 
@@ -22,3 +22,8 @@ async def chat_with_openai(
 
     except Exception as e:
         return OutResponse(answer = [str(e)])
+    
+@router.post("/problem_number")
+async def chat_with_openai() -> OutProblemNumber:
+
+    return OutProblemNumber(answer = "17430")
