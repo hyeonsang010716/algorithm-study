@@ -1,17 +1,19 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-// 팩토리얼 계산 함수
-int factorial(int n) {
-    int num=1;
-    for(int i=1; i<n+1; i++)
-        num=num*i;
-    return num;
-}
-
 // 조합 계산 함수
-
-// 결과를 반환하는 함수
-int getanswer(int N, int M) {
-    return factorial(N) / (factorial(N) * factorial (M-N)); // 정수형으로 변환 후 반환
+int getanswer(int M, int N) {
+    if (N > M) return 0; // N이 M보다 크면 조합 불가능
+    if (N == 0 || N == M) return 1; // N == 0 또는 N == M이면 조합은 1
+    
+    long long numerator = 1; // 분자
+    long long denominator = 1; // 분모
+    
+    // 분자 계산 (M * (M-1) * ... * (M-N+1))
+    for (int i = 0; i < N; i++) {
+        numerator *= (M - i);
+        denominator *= (i + 1); // 분모 계산 (N!)
+    }
+    
+    return (int)(numerator / denominator); // 정수로 반환
 }
