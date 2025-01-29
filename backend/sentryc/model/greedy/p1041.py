@@ -47,3 +47,5 @@ def solve(Input):
 if __name__=="__main__":
     input_list1 = "2\r\n1 2 3 4 5 6"
     print(solve(input_list1))
+    input_list2 = "3\r\n1 2 3 4 5 6"
+    print(solve(input_list2))
