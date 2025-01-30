@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from models.main import get_answer
 import os
 
@@ -18,10 +18,10 @@ def send_result():
     file_path = os.path.join("./upload", "tmp.txt")
     file.save(file_path)
 
-    print(file_path)
+    result = get_answer(pro_num, file_path)
 
     os.remove(file_path)
-    return {'answer': '1'}, 200
+    return jsonify(result), 200
 
 @bp.route("/chat/problem_number", methods=["POST"])
 def send_problem_number():
