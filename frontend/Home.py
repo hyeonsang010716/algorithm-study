@@ -3,6 +3,8 @@ import streamlit as st
 import requests
 import os
 import asyncio
+import tempfile
+
 
 st.set_page_config(page_title="알고리즘 프로젝트", page_icon="💬")
 
@@ -47,6 +49,20 @@ class Basic:
             return None
 
 
+    def send_problem_txt_to_server(self, file_path):
+        """서버에 요청을 보내고 응답을 받습니다."""
+
+        name = st.session_state["name"]
+
+        files = {"file": open(file_path, "rb")}
+
+        response = requests.post(f"{self.server_url}/{name}/chat/txt-algorithm", files=files)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error("Error communicating with the server.")
+            return None
+        
     def send_problem_input_to_server(self, user_query):
         """서버에 요청을 보내고 응답을 받습니다."""
 
@@ -81,12 +97,67 @@ class Basic:
         else: 
             st.sidebar.warning("이름을 선택해주세요.")
 
+#-------------------------------- 예찬 , 의현 -------------------------------------------------------
+
 
         if st.session_state["name"] != "dbwognl":
 
             if st.button("문제 요청" , disabled=st.session_state["session_disable"]):
                 st.session_state["problem_numbers"] = self.send_problem_number_to_server()["answer"]
-                
+            
+                stat , content , inputs , outputs = get_data(st.session_state["problem_numbers"])
+
+                try:
+                    if stat:
+                        input_content = ""
+                        for input in inputs:
+                            input_content += input + "\n\n\n"
+
+                        with tempfile.NamedTemporaryFile(delete=False, mode="w", suffix=".txt") as temp_file:
+                            
+
+                            temp_file.write(input_content)
+                            temp_file_path = temp_file.name
+
+                        st.write(content)
+                        
+                        answers = self.send_problem_txt_to_server(temp_file_path)["answer"]
+
+                        ai = ""
+                        
+                        human = ""
+                        
+                        for i in range(1 , len(inputs)+1):
+                            ai += f"## 예제 {i}" + "\n"
+                            ai += "#### 입력" + "\n"
+                            ai += inputs[i-1] + "\n"
+                            ai += "#### 출력" + "\n"
+                            ai += outputs[i-1] + "\n"
+
+                            human += "#### 정답" + "\n"
+                            human += answers[i-1] + "\n"
+
+                            st.chat_message("ai").write(ai.replace("\n", "  \n"))
+                            st.chat_message("human").write(human.replace("\n", "  \n"))
+                            
+                            ai = ""
+                            human = ""
+
+                        if os.path.exists(temp_file_path):
+                            os.remove(temp_file_path)
+                            print("임시 파일 삭제 완료")
+                        
+                    else:
+                        st.write("요청 에러 문제 숫자만 입력해주세요.")
+                except Exception as e:
+                    if os.path.exists(temp_file_path):
+                        os.remove(temp_file_path)
+                        print("임시 파일 삭제 완료")
+                    print(e)
+                    st.write("요청 에러 문제 숫자만 입력해주세요.")
+
+#-------------------------------- 재휘 -------------------------------------------------------------
+
         else:
             
             st.session_state["problem_numbers"] = st.chat_input(
@@ -95,41 +166,42 @@ class Basic:
             )
 
 
-        if st.session_state["problem_numbers"]:
+            if st.session_state["problem_numbers"]:
+            
+                stat , content , inputs , outputs = get_data(st.session_state["problem_numbers"])
 
-            stat , content , inputs , outputs = get_data(st.session_state["problem_numbers"])
+                try:
+                    if stat:
 
-            try:
-                if stat:
-                    st.write(content)
-                    
-                    answers = self.send_problem_input_to_server(inputs)["answer"]
-                    
-                    ai = ""
-                    
-                    human = ""
-                    
-                    for i in range(1 , len(inputs)+1):
-                        ai += f"## 예제 {i}" + "\n"
-                        ai += "#### 입력" + "\n"
-                        ai += inputs[i-1] + "\n"
-                        ai += "#### 출력" + "\n"
-                        ai += outputs[i-1] + "\n"
-
-                        human += "#### 정답" + "\n"
-                        human += answers[i-1] + "\n"
-
-                        st.chat_message("ai").write(ai.replace("\n", "  \n"))
-                        st.chat_message("human").write(human.replace("\n", "  \n"))
+                        st.write(content)
+                        
+                        answers = self.send_problem_input_to_server(inputs)["answer"]
                         
                         ai = ""
+                        
                         human = ""
-                    
-                else:
+                        
+                        for i in range(1 , len(inputs)+1):
+                            ai += f"## 예제 {i}" + "\n"
+                            ai += "#### 입력" + "\n"
+                            ai += inputs[i-1] + "\n"
+                            ai += "#### 출력" + "\n"
+                            ai += outputs[i-1] + "\n"
+
+                            human += "#### 정답" + "\n"
+                            human += answers[i-1] + "\n"
+
+                            st.chat_message("ai").write(ai.replace("\n", "  \n"))
+                            st.chat_message("human").write(human.replace("\n", "  \n"))
+                            
+                            ai = ""
+                            human = ""
+                        
+                    else:
+                        st.write("요청 에러 문제 숫자만 입력해주세요.")
+                except Exception as e:
+                    print(e)
                     st.write("요청 에러 문제 숫자만 입력해주세요.")
-            except Exception as e:
-                print(e)
-                st.write("요청 에러 문제 숫자만 입력해주세요.")
 
 
 if __name__ == "__main__":
