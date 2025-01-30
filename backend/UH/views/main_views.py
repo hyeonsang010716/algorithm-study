@@ -3,7 +3,7 @@ from models.main import get_answer
 
 bp = Blueprint('main', __name__, url_prefix='/UH')
 
-pro_num = 25379
+pro_num = 1918
 
 @bp.route("/chat/algorithm", methods=['POST'])
 def send_result():
