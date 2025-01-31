@@ -1,5 +1,7 @@
+import re
+
 def solve(Input):
-    input_list = Input.split("\r\n")
+    input_list = re.split(r'\r?\n', Input)
     
     answers = ""
     
