@@ -3,6 +3,13 @@ import importlib.util
 from typing import List, Dict
 
 
+def process_sys_input(input_data: str):
+    import sys
+    from io import StringIO
+
+    sys.stdin = StringIO(input_data)
+
+
 def open_txt_file(file_path: str) -> List[str]:
     result = []
     with open(file_path) as f:
