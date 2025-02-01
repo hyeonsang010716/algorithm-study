@@ -3,6 +3,29 @@ import importlib.util
 from typing import List, Dict
 
 
+def process_sys_input(input_data: str):
+    import sys
+    from io import StringIO
+
+    sys.stdin = StringIO(input_data)
+
+
+def open_txt_file(file_path: str) -> List[str]:
+    result = []
+    with open(file_path) as f:
+        tmp = []
+        while True:
+            line = f.readline()
+            if line == '':
+                break
+            elif line.strip() == "" and tmp:
+                result.append(''.join(tmp).strip())
+                tmp = []
+            else:
+                tmp.append(line)
+    return result
+
+
 def import_func_from_file(file_path: str):
     spec = importlib.util.spec_from_file_location("module.name", file_path)
     module = importlib.util.module_from_spec(spec)
@@ -22,8 +45,9 @@ def search_file_path(number: int) -> str:
     return None
 
 
-def get_answer(number: int, input_list: List[str]) -> Dict[str, List]:
+def get_answer(number: int, file_path: str) -> Dict[str, List]:
     result_list = []
+    input_list = open_txt_file(file_path)
     file_path = search_file_path(number)
     if file_path:
         solution = import_func_from_file(file_path)

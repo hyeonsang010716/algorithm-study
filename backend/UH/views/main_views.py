@@ -1,14 +1,27 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from models.main import get_answer
+import os
+
 
 bp = Blueprint('main', __name__, url_prefix='/UH')
 
-pro_num = 25379
+upload_folder = "./upload"
+pro_num = 1918
 
-@bp.route("/chat/algorithm", methods=['POST'])
+@bp.route("/chat/txt-algorithm", methods=['POST'])
 def send_result():
-    input_data = request.get_json()["input"]
-    return get_answer(pro_num, input_data)
+    file = request.files['file']
+    
+    if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder)
+    
+    file_path = os.path.join("./upload", "tmp.txt")
+    file.save(file_path)
+
+    result = get_answer(pro_num, file_path)
+
+    os.remove(file_path)
+    return jsonify(result), 200
 
 @bp.route("/chat/problem_number", methods=["POST"])
 def send_problem_number():
