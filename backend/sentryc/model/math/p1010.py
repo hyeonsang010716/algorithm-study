@@ -1,5 +1,5 @@
 def solve(Input):
-    input_list = Input.split("\n")
+    input_list = Input.split("\r\n")
     
     answers = ""
     
