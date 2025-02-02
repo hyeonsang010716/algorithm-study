@@ -4,6 +4,7 @@ import requests
 import os
 import asyncio
 import tempfile
+import sqlite3
 
 
 st.set_page_config(page_title="알고리즘 프로젝트", page_icon="💬")
@@ -25,6 +26,15 @@ class Basic:
         
         if "problem_numbers" not in st.session_state:
             st.session_state["problem_numbers"] = None
+            
+        self.conn = sqlite3.connect("../problems.db")
+        self.cursor = self.conn.cursor()
+        self.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS algo (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                problem TEXT
+            )
+        """)
 
     def session_enable(self):
         st.session_state["session_disable"] = False
@@ -49,14 +59,12 @@ class Basic:
             return None
 
 
-    def send_problem_txt_to_server(self, file_path):
+    def send_problem_txt_to_server(self):
         """서버에 요청을 보내고 응답을 받습니다."""
 
         name = st.session_state["name"]
 
-        files = {"file": open(file_path, "rb")}
-
-        response = requests.post(f"{self.server_url}/{name}/chat/txt-algorithm", files=files)
+        response = requests.post(f"{self.server_url}/{name}/chat/txt-algorithm")
         if response.status_code == 200:
             return response.json()
         else:
@@ -113,15 +121,15 @@ class Basic:
                         for input in inputs:
                             input_content += input + "\n\n\n"
 
-                        with tempfile.NamedTemporaryFile(delete=False, mode="w", suffix=".txt") as temp_file:
-                            
+                        self.cursor.execute("INSERT INTO algo (problem) VALUES (?)", (input_content,))
 
-                            temp_file.write(input_content)
-                            temp_file_path = temp_file.name
+                        self.conn.commit()
+
+                        print("DB 삽입 완료")
 
                         st.write(content)
                         
-                        answers = self.send_problem_txt_to_server(temp_file_path)["answer"]
+                        answers = self.send_problem_txt_to_server()["answer"]
 
                         ai = ""
                         
@@ -143,16 +151,15 @@ class Basic:
                             ai = ""
                             human = ""
 
-                        if os.path.exists(temp_file_path):
-                            os.remove(temp_file_path)
-                            print("임시 파일 삭제 완료")
+                        
+                        self.cursor.execute("DELETE FROM algo WHERE problem = ?", (input_content,))
+                        self.conn.commit()
+                        print("DB 데이터 삭제 완료")
                         
                     else:
                         st.write("요청 에러 문제 숫자만 입력해주세요.")
                 except Exception as e:
-                    if os.path.exists(temp_file_path):
-                        os.remove(temp_file_path)
-                        print("임시 파일 삭제 완료")
+                    print("DB 데이터 삭제 완료")
                     print(e)
                     st.write("요청 에러 문제 숫자만 입력해주세요.")
 
