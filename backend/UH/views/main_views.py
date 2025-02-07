@@ -8,7 +8,7 @@ import os
 bp = Blueprint('main', __name__, url_prefix='/UH')
 
 upload_folder = "./upload"
-pro_num = 25344
+pro_num = 1436
 
 @bp.route("/chat/txt-algorithm", methods=['POST'])
 def send_result():
