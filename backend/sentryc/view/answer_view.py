@@ -1,22 +1,34 @@
 from flask import Blueprint, request, jsonify
-from model.greedy import p1041
-import re
+import sqlite3
+
+from model.string import p1013
 
 ans_bp = Blueprint('answer', __name__)
 @ans_bp.route('/chat/txt-algorithm/', methods=['POST'])
 def send_ans():
-    input_file = request.files.get('file')
-    input_list = re.split(r'\r?\n\r?\n\r?\n', input_file.read().decode('utf-8'))
+    try:
+        conn = sqlite3.connect("../../problems.db")
+        
+        cursur = conn.cursor()
+        cursur.execute("SELECT * FROM algo")
+        
+        sql_input_list = cursur.fetchall()
     
+        conn.close()
+        
+    except sqlite3.Error as e:
+        print(f"Sqlite Error: {e}")
+        
     answers = []
     
+    input_list = sql_input_list[0][1].split("\n\n\n")
     for input in input_list:
         if input == "": continue
-        answer = p1041.solve(input)
+        answer = p1013.solve(input)
         answers.append(str(answer))
         
     return jsonify({"answer": answers})
 
 @ans_bp.route('/chat/problem_number/', methods=['POST'])
 def send_num():
-    return jsonify({"answer": 1041})
+    return jsonify({"answer": 1013})
