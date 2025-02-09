@@ -45,9 +45,8 @@ def search_file_path(number: int) -> str:
     return None
 
 
-def get_answer(number: int, file_path: str) -> Dict[str, List]:
+def get_answer(number: int, input_list: List[str]) -> Dict[str, List]:
     result_list = []
-    input_list = open_txt_file(file_path)
     file_path = search_file_path(number)
     if file_path:
         solution = import_func_from_file(file_path)
