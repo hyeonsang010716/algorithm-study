@@ -27,7 +27,7 @@
 
 | 역할 | 담당자 | 기술 |
 |------|------|------|
-| 프론트엔드 | - | `Streamlit` |
+| 프론트엔드 | hyeonsang010716 | `Streamlit` |
 | 백엔드 | UH3135 | `Flask` |
 | 백엔드 | sentryc0201 | `Flask` |
 | 백엔드 | dbwognl123 | `FastAPI` |
